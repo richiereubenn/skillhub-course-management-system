@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests;
 
 use Tests\TestCase;
 use App\Models\Course;
@@ -8,11 +8,11 @@ use App\Http\Controllers\CourseController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CourseControllerUnitTest extends TestCase
+class CourseControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_store_success()
+    public function test_store_success(): void
     {
         $controller = new CourseController();
         $request = Request::create('/courses', 'POST', [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests;
 
 use Tests\TestCase;
 use App\Models\Participant;
@@ -8,7 +8,7 @@ use App\Http\Controllers\ParticipantController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ParticipantControllerUnitTest extends TestCase
+class ParticipantControllerTest extends TestCase
 {
     use RefreshDatabase;
 
