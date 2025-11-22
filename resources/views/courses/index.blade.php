@@ -7,7 +7,7 @@
                 id:null,
                 name:'',
                 instructor:'',
-                schedule: '',
+                schedule: new Date().toISOString().slice(0,16),
                 description:''
             },
             openCreate(){
@@ -16,7 +16,7 @@
                     id:null,
                     name:'',
                     instructor:'',
-                    schedule: '',
+                    schedule: new Date().toISOString().slice(0,16),
                     description:''
                 };
                 this.modalOpen = true;
