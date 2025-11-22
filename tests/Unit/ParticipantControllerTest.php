@@ -27,13 +27,29 @@ class ParticipantControllerTest extends TestCase
         $this->assertDatabaseHas('participants', ['email' => 'john@example.com']);
     }
 
-    public function test_store_fail_invalid_data()
+    public function test_store_fail_empty_name()
     {
         $controller = new ParticipantController();
         $request = Request::create('/participants', 'POST', [
             'name' => '',
-            'phone' => 'abc',
-            'email' => 'notemail',
+            'phone' => '08123456789',
+            'email' => 'john@example.com',
+            'address' => 'Jl. Example',
+        ]);
+
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+
+        $controller->store($request);
+    }
+
+    public function test_store_fail_invalid_email()
+    {
+        $controller = new ParticipantController();
+        $request = Request::create('/participants', 'POST', [
+            'name' => 'john',
+            'phone' => '08123456789',
+            'email' => 'john',
+            'address' => 'Jl. Example',
         ]);
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
@@ -66,7 +82,7 @@ class ParticipantControllerTest extends TestCase
         $request = Request::create("/participants/{$p2->id}", 'PUT', [
             'name' => 'New Name',
             'phone' => $p2->phone,
-            'email' => 'a@example.com', // duplicate
+            'email' => 'a@example.com',
             'address' => $p2->address,
         ]);
 

@@ -31,8 +31,25 @@ class CourseControllerTest extends TestCase
     {
         $controller = new CourseController();
         $request = Request::create('/courses', 'POST', [
-            'name' => 'Invalid',
+            'name' => 'Laravel 101',
+            'description' => 'Intro',
             'schedule' => 'invalid-date',
+            'instructor' => 'Jane Doe',
+        ]);
+
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+
+        $controller->store($request);
+    }
+
+    public function test_store_fail_empty_name()
+    {
+        $controller = new CourseController();
+        $request = Request::create('/courses', 'POST', [
+            'name' => '',
+            'description' => 'Intro',
+            'schedule' => '2025-12-01',
+            'instructor' => 'Jane Doe',
         ]);
 
         $this->expectException(\Illuminate\Validation\ValidationException::class);
@@ -54,6 +71,22 @@ class CourseControllerTest extends TestCase
         $controller->update($request, $course);
 
         $this->assertDatabaseHas('courses', ['name' => 'Updated Course']);
+    }
+
+    public function test_update_fail_invalid_schedule()
+    {
+        $course = Course::factory()->create();
+        $controller = new CourseController();
+        $request = Request::create("/courses/{$course->id}", 'PUT', [
+            'name' => 'Updated Course',
+            'schedule' => 'invalid-date',
+            'description' => $course->description,
+            'instructor' => $course->instructor,
+        ]);
+
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+
+        $controller->update($request, $course);
     }
 
     public function test_destroy_success()
