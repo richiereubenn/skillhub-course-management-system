@@ -43,7 +43,6 @@
             </button>
         </div>
 
-        <!-- Registration Modal -->
         <div x-show="modalOpen" style="display:none" class="fixed inset-0 flex items-center justify-center z-50"
             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100">
@@ -92,7 +91,7 @@
             <table class="w-full">
                 <thead class="bg-blue-600">
                     <tr>
-                        <th class="py-3 px-4 text-left font-semibold text-white">#</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">No</th>
                         <th class="py-3 px-4 text-left font-semibold text-white">Name</th>
                         <th class="py-3 px-4 text-left font-semibold text-white">Email</th>
                         <th class="py-3 px-4 text-left font-semibold text-white">Registration Date</th>
@@ -102,7 +101,7 @@
                 <tbody>
                     @forelse($course->participants as $p)
                         <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                            <td class="py-3 px-4">{{ $p->id }}</td>
+                            <td class="py-3 px-4">{{ $loop->iteration }}</td>
                             <td class="py-3 px-4 font-medium">{{ $p->name }}</td>
                             <td class="py-3 px-4 text-gray-600">{{ $p->email }}</td>
                             <td class="py-3 px-4 text-gray-600">

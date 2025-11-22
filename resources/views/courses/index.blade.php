@@ -1,33 +1,38 @@
 @extends('layouts.app')
 @section('content')
     <div x-data="{
-                modalOpen:false,
-                isEdit:false,
-                form:{
-                    id:null, 
-                    name:'', 
-                    instructor:'', 
-                    schedule_day:'', 
-                    schedule_time:'', 
+            modalOpen:false,
+            isEdit:false,
+            form:{
+                id:null,
+                name:'',
+                instructor:'',
+                schedule: '',
+                description:''
+            },
+            openCreate(){
+                this.isEdit = false;
+                this.form = {
+                    id:null,
+                    name:'',
+                    instructor:'',
+                    schedule: '',
                     description:''
-                },
-                openCreate(){
-                    this.isEdit = false;
-                    this.form = { id:null, name:'', instructor:'', schedule:'', description:'' };
-                    this.modalOpen = true;
-                },
-                openEdit(c){
-                    this.isEdit = true;
-                    this.form = { 
-                    id:c.id, 
-                    name:c.name, 
-                    instructor:c.instructor, 
-                    schedule:c.schedule ? c.schedule.replace(' ', 'T') : '', // convert to HTML datetime-local format
-                    description:c.description 
                 };
                 this.modalOpen = true;
-        }
-            }">
+            },
+            openEdit(c){
+                this.isEdit = true;
+                this.form = {
+                    id:c.id,
+                    name:c.name,
+                    instructor:c.instructor,
+                    schedule:c.schedule ? c.schedule.replace(' ', 'T') : '',
+                    description:c.description
+                };
+                this.modalOpen = true;
+            }
+        }">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Courses</h2>
             <button @click="openCreate()"
@@ -59,7 +64,6 @@
                         <input x-model="form.schedule" name="schedule" type="datetime-local"
                             class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" />
 
-
                         <textarea x-model="form.description" name="description" placeholder="Description" rows="3"
                             class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none"></textarea>
                     </div>
@@ -83,8 +87,8 @@
                 <table class="w-full">
                     <thead class="bg-blue-600">
                         <tr>
-                            <th class="py-3 px-4 text-left font-semibold text-white">#</th>
-                            <th class="py-3 px-4 text-left font-semibold text-white">Name</th>
+                            <th class="py-3 px-4 text-left font-semibold text-white">No</th>
+                            <th class="py-3 px-4 text-left font-semibold text-white">Course Name</th>
                             <th class="py-3 px-4 text-left font-semibold text-white">Instructor</th>
                             <th class="py-3 px-4 text-left font-semibold text-white">Schedule</th>
                             <th class="py-3 px-4 text-left font-semibold text-white">Actions</th>
@@ -94,7 +98,7 @@
                     <tbody>
                         @forelse($courses as $c)
                             <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                                <td class="py-3 px-4">{{ $c->id }}</td>
+                                <td class="py-3 px-4">{{ $loop->iteration }}</td>
                                 <td class="py-3 px-4 font-medium">{{ $c->name }}</td>
                                 <td class="py-3 px-4 text-gray-600">{{ $c->instructor }}</td>
                                 <td class="py-3 px-4 text-gray-600">

@@ -31,4 +31,45 @@
             </div>
         </div>
     </div>
+
+    <div class="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
+        <div class="p-6 border-b-2 border-gray-200 bg-blue-50">
+            <h3 class="text-xl font-bold text-gray-900">Registered Courses</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-blue-600">
+                    <tr>
+                        <th class="py-3 px-4 text-left font-semibold text-white">No</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">Course</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">Course Schedule</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">Course Instructor</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">Registration Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($participant->courses as $c)
+                        <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
+                            <td class="py-3 px-4">{{ $loop->iteration }}</td>
+                            <td class="py-3 px-4 font-medium">{{ $c->name }}</td>
+                            <td class="py-3 px-4 text-gray-600">
+                                {{ $c->schedule ? \Carbon\Carbon::parse($c->pivot->registration_date)->toDayDateTimeString() : '-' }}
+                            </td>
+                            <td class="py-3 px-4">{{ $c->instructor }}</td>
+                            <td class="py-3 px-4 text-gray-600">
+                                {{ $c->pivot->registration_date ? \Carbon\Carbon::parse($c->pivot->registration_date)->toDayDateTimeString() : '-' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="py-8 px-4 text-center text-gray-500">
+                                No courses registered yet
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection

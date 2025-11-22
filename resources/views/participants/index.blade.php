@@ -1,26 +1,32 @@
 @extends('layouts.app')
 @section('content')
     <div x-data="{
-                modalOpen:false,
-                isEdit:false,
-                form:{ id:null, name:'', email:'', phone:'', address:'' },
-                openCreate(){
-                    this.isEdit = false;
-                    this.form = { id:null, name:'', email:'', phone:'', address:'' };
-                    this.modalOpen = true;
-                },
-                openEdit(p){
-                    this.isEdit = true;
-                    this.form = { 
-                        id:p.id, 
-                        name:p.name, 
-                        email:p.email, 
-                        phone:p.phone, 
-                        address:p.address 
-                    };
-                    this.modalOpen = true;
-                }
-            }">
+            modalOpen:false,
+            isEdit:false,
+            form:{ 
+                id:null, 
+                name:'', 
+                email:'', 
+                phone:'', 
+                address:'' 
+            },
+            openCreate(){
+                this.isEdit = false;
+                this.form = { id:null, name:'', email:'', phone:'', address:'' };
+                this.modalOpen = true;
+            },
+            openEdit(p){
+                this.isEdit = true;
+                this.form = { 
+                    id:p.id, 
+                    name:p.name, 
+                    email:p.email, 
+                    phone:p.phone, 
+                    address:p.address 
+                };
+                this.modalOpen = true;
+            }
+        }">
 
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Participants</h2>
@@ -76,7 +82,7 @@
                 <table class="w-full">
                     <thead class="bg-blue-600">
                         <tr>
-                            <th class="py-3 px-4 text-left font-semibold text-white">#</th>
+                            <th class="py-3 px-4 text-left font-semibold text-white">No</th>
                             <th class="py-3 px-4 text-left font-semibold text-white">Name</th>
                             <th class="py-3 px-4 text-left font-semibold text-white">Email</th>
                             <th class="py-3 px-4 text-left font-semibold text-white">Phone</th>
@@ -87,7 +93,7 @@
                     <tbody>
                         @forelse($participants as $p)
                             <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                                <td class="py-3 px-4">{{ $p->id }}</td>
+                                <td class="py-3 px-4">{{ $loop->iteration }}</td>
                                 <td class="py-3 px-4 font-medium">{{ $p->name }}</td>
                                 <td class="py-3 px-4 text-gray-600">{{ $p->email }}</td>
                                 <td class="py-3 px-4 text-gray-600">{{ $p->phone }}</td>
