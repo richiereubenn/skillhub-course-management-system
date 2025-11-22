@@ -27,6 +27,12 @@ class ParticipantController extends Controller
         return back()->with('success','Participant created successfully.');
     }
 
+    public function show(Participant $participant)
+    {
+        $participant->load('courses');
+        return view('participants.show', compact('participant'));
+    }
+
     public function update(Request $request, Participant $participant)
     {
         $validated = $request->validate([
