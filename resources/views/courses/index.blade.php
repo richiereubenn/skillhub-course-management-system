@@ -3,32 +3,32 @@
 <div x-data="{
             modalOpen:false,
             isEdit:false,
-            form:{ id:null, name:'', email:'', phone:'', address:'' },
+            form:{ id:null, name:'', instructor:'', schedule:'', description:'' },
             openCreate(){
                 this.isEdit = false;
-                this.form = { id:null, name:'', email:'', phone:'', address:'' };
+                this.form = { id:null, name:'', instructor:'', schedule:'', description:'' };
                 this.modalOpen = true;
             },
-            openEdit(p){
+            openEdit(c){
                 this.isEdit = true;
                 this.form = { 
-                    id:p.id, 
-                    name:p.name, 
-                    email:p.email, 
-                    phone:p.phone, 
-                    address:p.address 
+                    id:c.id, 
+                    name:c.name, 
+                    instructor:c.instructor, 
+                    schedule:c.schedule, 
+                    description:c.description 
                 };
                 this.modalOpen = true;
             }
         }">
-
+    
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-bold text-gray-900">Participants</h2>
+        <h2 class="text-3xl font-bold text-gray-900">Courses</h2>
         <button @click="openCreate()" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
-            Add Participant
+            Add Course
         </button>
     </div>
-    
+
     <div x-show="modalOpen" 
          style="display:none" 
          class="fixed inset-0 flex items-center justify-center z-50"
@@ -39,9 +39,9 @@
         <div class="absolute inset-0 bg-black opacity-50" @click="modalOpen=false"></div>
         
         <div class="bg-white rounded-lg p-6 z-10 w-full max-w-md border-2 border-blue-600">
-            <h3 class="text-xl font-bold mb-4 text-gray-900" x-text="isEdit ? 'Edit Participant' : 'Add Participant'"></h3>
+            <h3 class="text-xl font-bold mb-4 text-gray-900" x-text="isEdit ? 'Edit Course' : 'Add Course'"></h3>
             
-            <form method="POST" :action="isEdit ? '/participants/' + form.id : '{{ route('participants.store') }}'">
+            <form method="POST" :action="isEdit ? '/courses/' + form.id : '{{ route('courses.store') }}'">
                 @csrf
                 <input type="hidden" name="_method" x-bind:value="isEdit ? 'PUT' : 'POST'">
                 
@@ -51,20 +51,21 @@
                            placeholder="Name" 
                            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" />
                     
-                    <input x-model="form.email" 
-                           name="email" 
-                           placeholder="Email"
+                    <input x-model="form.instructor" 
+                           name="instructor" 
+                           placeholder="Instructor"
                            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" />
                     
-                    <input x-model="form.phone" 
-                           name="phone" 
-                           placeholder="Phone"
+                    <input x-model="form.schedule" 
+                           name="schedule" 
+                           placeholder="Schedule"
                            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" />
                     
-                    <input x-model="form.address" 
-                           name="address" 
-                           placeholder="Address"
-                           class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" />
+                    <textarea x-model="form.description" 
+                              name="description" 
+                              placeholder="Description"
+                              rows="3"
+                              class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none"></textarea>
                 </div>
                 
                 <div class="flex justify-end gap-3 mt-6">
@@ -88,30 +89,30 @@
                     <tr>
                         <th class="py-3 px-4 text-left font-semibold text-white">#</th>
                         <th class="py-3 px-4 text-left font-semibold text-white">Name</th>
-                        <th class="py-3 px-4 text-left font-semibold text-white">Email</th>
-                        <th class="py-3 px-4 text-left font-semibold text-white">Phone</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">Instructor</th>
+                        <th class="py-3 px-4 text-left font-semibold text-white">Schedule</th>
                         <th class="py-3 px-4 text-left font-semibold text-white">Actions</th>
                         <th class="py-3 px-4 text-left font-semibold text-white">Detail</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($participants as $p)
+                    @foreach($courses as $c)
                     <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                        <td class="py-3 px-4">{{ $p->id }}</td>
-                        <td class="py-3 px-4 font-medium">{{ $p->name }}</td>
-                        <td class="py-3 px-4 text-gray-600">{{ $p->email }}</td>
-                        <td class="py-3 px-4 text-gray-600">{{ $p->phone }}</td>
+                        <td class="py-3 px-4">{{ $c->id }}</td>
+                        <td class="py-3 px-4 font-medium">{{ $c->name }}</td>
+                        <td class="py-3 px-4 text-gray-600">{{ $c->instructor }}</td>
+                        <td class="py-3 px-4 text-gray-600">{{ $c->schedule }}</td>
                         <td class="py-3 px-4">
                             <div class="flex gap-2">
                                 <button
-                                    @click="openEdit({ id:'{{ $p->id }}', name:'{{ $p->name }}', email:'{{ $p->email }}', phone:'{{ $p->phone }}', address:'{{ $p->address }}' })"
+                                    @click="openEdit({ id:'{{ $c->id }}', name:'{{ $c->name }}', instructor:'{{ $c->instructor }}', schedule:'{{ $c->schedule }}', description:'{{ addslashes($c->description) }}' })"
                                     class="px-3 py-1 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
                                     Edit
                                 </button>
                                 <form method="POST" 
-                                      action="{{ route('participants.destroy', $p) }}" 
+                                      action="{{ route('courses.destroy', $c) }}" 
                                       class="inline-block"
-                                      onsubmit="return confirm('Delete participant?')">
+                                      onsubmit="return confirm('Delete course?')">
                                     @csrf @method('DELETE')
                                     <button class="px-3 py-1 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition">
                                         Delete
@@ -120,7 +121,7 @@
                             </div>
                         </td>
                         <td class="py-3 px-4">
-                            <a href="{{ route('participants.show', $p) }}" 
+                            <a href="{{ route('courses.show', $c) }}" 
                                class="inline-block px-3 py-1 bg-gray-200 text-gray-900 font-medium rounded-lg hover:bg-gray-300 transition">
                                 Detail
                             </a>
@@ -132,7 +133,7 @@
         </div>
         
         <div class="p-4 bg-gray-50 border-t-2 border-gray-200">
-            {{ $participants->links() }}
+            {{ $courses->links() }}
         </div>
     </div>
 </div>

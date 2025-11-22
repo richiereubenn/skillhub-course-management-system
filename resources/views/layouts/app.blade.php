@@ -20,6 +20,10 @@
                     class="block py-3 px-4 rounded-lg transition {{ request()->routeIs('participants.*') ? 'bg-blue-600 text-white font-semibold' : 'text-gray-700 hover:bg-blue-50' }}">
                     Participants
                 </a>
+                <a href="{{ route('courses.index') }}"
+                    class="block py-3 px-4 rounded-lg transition {{ request()->routeIs('courses.*') ? 'bg-blue-600 text-white font-semibold' : 'text-gray-700 hover:bg-blue-50' }}">
+                    Courses
+                </a>
             </nav>
         </aside>
 
