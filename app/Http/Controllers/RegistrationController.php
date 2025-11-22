@@ -23,12 +23,12 @@ class RegistrationController extends Controller
             'registration_date' => $validated['registration_date'] ?? now()
         ]);
 
-        return back()->with('success','Participant registered to course.');
+        return back()->with('success','Participant registered to course successfully.');
     }
 
     public function destroy(Course $course, Participant $participant)
     {
         $course->participants()->detach($participant->id);
-        return back()->with('success','Registration deleted.');
+        return back()->with('success','Registration deleted successfully.');
     }
 }
