@@ -13,7 +13,7 @@ class ParticipantController extends Controller
         return view('participants.index', compact('participants'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'name'=>'required|string|max:255',
@@ -41,7 +41,7 @@ class ParticipantController extends Controller
         return back()->with('success','Participant updated successfully.');
     }
 
-    public function delete(Participant $participant)
+    public function destroy(Participant $participant)
     {
         $participant->delete();
         return back()->with('success','Participant deleted successfully.');
