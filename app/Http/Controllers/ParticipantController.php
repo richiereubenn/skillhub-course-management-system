@@ -17,7 +17,7 @@ class ParticipantController extends Controller
     {
         $validated = $request->validate([
             'name'=>'required|string|max:255',
-            'phone'=>'nullable|string|max:32',
+            'phone'=>'required|string|max:32|regex:/^[0-9]+$/',
             'email'=>'required|email|unique:participants,email',
             'address'=>'nullable|string|max:500',
         ]);
@@ -37,7 +37,7 @@ class ParticipantController extends Controller
     {
         $validated = $request->validate([
             'name'=>'required|string|max:255',
-            'phone'=>'nullable|string|max:32',
+            'phone'=>'required|string|max:32|regex:/^[0-9]+$/',
             'email'=>"required|email|unique:participants,email,{$participant->id}",
             'address'=>'nullable|string|max:500',
         ]);

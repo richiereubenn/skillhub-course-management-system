@@ -92,7 +92,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($courses as $c)
+                        @forelse($courses as $c)
                             <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
                                 <td class="py-3 px-4">{{ $c->id }}</td>
                                 <td class="py-3 px-4 font-medium">{{ $c->name }}</td>
@@ -125,7 +125,13 @@
                                     </a>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-gray-500">
+                                    No course found.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -85,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($participants as $p)
+                        @forelse($participants as $p)
                             <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
                                 <td class="py-3 px-4">{{ $p->id }}</td>
                                 <td class="py-3 px-4 font-medium">{{ $p->name }}</td>
@@ -115,7 +115,13 @@
                                     </a>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-gray-500">
+                                    No participants found.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
