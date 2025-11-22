@@ -26,6 +26,12 @@ class CourseController extends Controller
         return back()->with('success','Course created successfully.');
     }
 
+    public function show(Course $course)
+    {
+        $course->load('participants');
+        return view('courses.show', compact('course'));
+    }
+
     public function update(Request $request, Course $course)
     {
         $validated = $request->validate([
