@@ -80,7 +80,7 @@ class ParticipantControllerUnitTest extends TestCase
         $participant = Participant::factory()->create();
         $controller = new ParticipantController();
 
-        $controller->destroy($participant);
+        $controller->destroy(participant: $participant);
 
         $this->assertDatabaseMissing('participants', ['id' => $participant->id]);
     }
