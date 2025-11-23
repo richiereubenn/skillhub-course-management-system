@@ -89,7 +89,7 @@ class ParticipantControllerTest extends TestCase
 
         $response = $this->delete("/participants/{$participant->id}");
 
-        $response->assertStatus(302); // redirect expected
+        $response->assertStatus(302); 
         $this->assertDatabaseMissing('participants', ['id' => $participant->id]);
     }
 }
