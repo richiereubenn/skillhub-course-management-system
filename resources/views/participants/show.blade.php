@@ -63,7 +63,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="py-8 px-4 text-center text-gray-500">
+                            <td colspan="5" class="py-8 px-4 text-center text-gray-500">
                                 No courses registered yet
                             </td>
                         </tr>
