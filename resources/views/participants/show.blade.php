@@ -54,7 +54,7 @@
                             <td class="py-3 px-4">{{ $loop->iteration }}</td>
                             <td class="py-3 px-4 font-medium">{{ $c->name }}</td>
                             <td class="py-3 px-4 text-gray-600">
-                                {{ $c->schedule ? \Carbon\Carbon::parse($c->pivot->registration_date)->toDayDateTimeString() : '-' }}
+                                {{ $c->schedule ? \Carbon\Carbon::parse($c->schedule)->toDayDateTimeString() : '-' }}
                             </td>
                             <td class="py-3 px-4">{{ $c->instructor }}</td>
                             <td class="py-3 px-4 text-gray-600">
