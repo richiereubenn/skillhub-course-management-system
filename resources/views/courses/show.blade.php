@@ -69,6 +69,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Registration Date</label>
                             <input type="datetime-local" name="registration_date"
+                            value="{{ old('registration_date') ?? now()->format('Y-m-d\TH:i') }}"
                                 class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" />
                         </div>
                     </div>
