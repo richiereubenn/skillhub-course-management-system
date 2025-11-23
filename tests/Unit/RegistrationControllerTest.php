@@ -1,30 +1,29 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Participant;
 use App\Models\Course;
-use App\Http\Controllers\RegistrationController;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 
 class RegistrationControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_store_success()
+    #[Test]
+    public function store_success()
     {
         $participant = Participant::factory()->create();
         $course = Course::factory()->create();
 
-        $controller = new RegistrationController();
-        $request = Request::create("/courses/{$course->id}/register", 'POST', [
+        $response = $this->post("/courses/{$course->id}/register", [
             'participant_id' => $participant->id,
             'registration_date' => '2025-12-01',
         ]);
 
-        $controller->store($request, $course);
+        $response->assertStatus(302); 
 
         $this->assertDatabaseHas('registrations', [
             'course_id' => $course->id,
@@ -32,39 +31,36 @@ class RegistrationControllerTest extends TestCase
         ]);
     }
 
-    public function test_store_fail_already_registered()
+    #[Test]
+    public function store_fail_already_registered()
     {
         $participant = Participant::factory()->create();
         $course = Course::factory()->create();
+
         $course->participants()->attach($participant->id);
 
-        $controller = new RegistrationController();
-        $request = new Request([
-            'participant_id' => $participant->id
+        $response = $this->post("/courses/{$course->id}/register", [
+            'participant_id' => $participant->id,
         ]);
 
-        $response = $controller->store($request, $course);
-
-        $errors = $response->getSession()->get('errors')->getBag('default')->getMessages();
-        $this->assertArrayHasKey('participant_id', $errors);
-
+        $response->assertSessionHasErrors(['participant_id']);
         $this->assertEquals(1, $course->participants()->count());
     }
 
-
-    public function test_destroy_success()
+    #[Test]
+    public function destroy_success()
     {
         $participant = Participant::factory()->create();
         $course = Course::factory()->create();
+        
         $course->participants()->attach($participant->id);
 
-        $controller = new RegistrationController();
-        $controller->destroy($course, $participant);
+        $response = $this->delete("/courses/{$course->id}/register/{$participant->id}");
 
+        $response->assertStatus(302);
         $this->assertDatabaseMissing('registrations', [
             'course_id' => $course->id,
             'participant_id' => $participant->id,
         ]);
     }
 }
-

@@ -1,103 +1,95 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Participant;
-use App\Http\Controllers\ParticipantController;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ParticipantControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_store_success()
     {
-        $controller = new ParticipantController();
-        $request = Request::create('/participants', 'POST', [
+        $response = $this->post('/participants', [
             'name' => 'John Doe',
             'phone' => '08123456789',
             'email' => 'john@example.com',
             'address' => 'Jl. Example',
         ]);
 
-        $controller->store($request);
-
+        $response->assertStatus(302);
         $this->assertDatabaseHas('participants', ['email' => 'john@example.com']);
     }
 
+    #[Test]
     public function test_store_fail_empty_name()
     {
-        $controller = new ParticipantController();
-        $request = Request::create('/participants', 'POST', [
+        $response = $this->post('/participants', [
             'name' => '',
             'phone' => '08123456789',
             'email' => 'john@example.com',
             'address' => 'Jl. Example',
         ]);
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
-
-        $controller->store($request);
+        $response->assertSessionHasErrors(['name']);
     }
 
+    #[Test]
     public function test_store_fail_invalid_email()
     {
-        $controller = new ParticipantController();
-        $request = Request::create('/participants', 'POST', [
+        $response = $this->post('/participants', [
             'name' => 'john',
             'phone' => '08123456789',
-            'email' => 'john',
+            'email' => 'john', 
             'address' => 'Jl. Example',
         ]);
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
-
-        $controller->store($request);
+        $response->assertSessionHasErrors(['email']);
     }
 
+    #[Test]
     public function test_update_success()
     {
         $participant = Participant::factory()->create();
-        $controller = new ParticipantController();
-        $request = Request::create("/participants/{$participant->id}", 'PUT', [
+
+        $response = $this->put("/participants/{$participant->id}", [
             'name' => 'Updated Name',
             'phone' => $participant->phone,
             'email' => $participant->email,
             'address' => $participant->address,
         ]);
 
-        $controller->update($request, $participant);
-
+        $response->assertStatus(302);  
         $this->assertDatabaseHas('participants', ['name' => 'Updated Name']);
     }
 
+    #[Test]
     public function test_update_fail_duplicate_email()
     {
         $p1 = Participant::factory()->create(['email' => 'a@example.com']);
         $p2 = Participant::factory()->create(['email' => 'b@example.com']);
 
-        $controller = new ParticipantController();
-        $request = Request::create("/participants/{$p2->id}", 'PUT', [
+        $response = $this->put("/participants/{$p2->id}", [
             'name' => 'New Name',
             'phone' => $p2->phone,
-            'email' => 'a@example.com',
+            'email' => 'a@example.com', 
             'address' => $p2->address,
         ]);
 
-        $this->expectException(\Illuminate\Validation\ValidationException::class);
-
-        $controller->update($request, $p2);
+        $response->assertSessionHasErrors(['email']);
     }
 
+    #[Test]
     public function test_destroy_success()
     {
         $participant = Participant::factory()->create();
-        $controller = new ParticipantController();
 
-        $controller->destroy(participant: $participant);
+        $response = $this->delete("/participants/{$participant->id}");
 
+        $response->assertStatus(302); // redirect expected
         $this->assertDatabaseMissing('participants', ['id' => $participant->id]);
     }
 }
